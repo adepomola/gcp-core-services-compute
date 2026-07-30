@@ -104,7 +104,7 @@ This service forms the foundation for hosting applications and services within G
 
 ### Screenshot
 
-![Compute Engine Dashboard](Screenshots/01-compute-engine-dashboard.png)
+![Compute Engine Dashboard](screenshots/01-compute-engine-dashboard.png)
 
 ---
 
@@ -134,7 +134,7 @@ After reviewing the configuration, I clicked *Create* and successfully deployed 
 
 ### Screenshot
 
-![VM Creation](Screenshots/02-m-creation.png)
+![VM Creation](screenshots/02-m-creation.png)
 
 ---
 
@@ -150,7 +150,7 @@ Successful deployment at this stage confirmed that the compute infrastructure wa
 
 ### Screenshot
 
-![VM Running](Screenshots/03-vm-instance-running.png)
+![VM Running](screenshots/03-vm-instance-running.png)
 
 ---
 
@@ -174,7 +174,7 @@ Successfully connecting through SSH confirmed that the virtual machine was prope
 
 ### Screenshot
 
-![SSH Access](Screenshots/04-ssh-access.png)
+![SSH Access](screenshots/04-ssh-access.png)
 
 ---
 
@@ -211,7 +211,7 @@ This confirmed that the Apache web server had started successfully and was runni
 
 ### Screenshot
 
-![Apache Service Running](Screenshots/05-apache-service-running.png)
+![Apache Service Running](screenshots/05-apache-service-running.png)
 
 ---
 
@@ -236,7 +236,7 @@ This successful test verified that the compute instance was fully operational as
 
 ### Screenshot
 
-![Apache Default Page](Screenshots/06-apache-default-page.png)
+![Apache Default Page](screenshots/06-apache-default-page.png)
 
 ---
 
@@ -261,7 +261,7 @@ The template will later be used by the Managed Instance Group to automatically p
 
 ### Screenshot
 
-![Instance Template](Screenshots/07-instance-template-created.png)
+![Instance Template](screenshots/07-instance-template-created.png)
 
 ---
 
@@ -289,7 +289,7 @@ This approach improves application availability while reducing manual administra
 
 ### Screenshot
 
-![Managed Instance Group](Screenshots/08-managed-instance-group.png)
+![Managed Instance Group](screenshots/08-managed-instance-group.png)
 
 ---
 
@@ -320,7 +320,7 @@ If one virtual machine becomes unavailable, the Load Balancer automatically redi
 
 ### Screenshot
 
-![HTTP Load Balancer](Screenshots/09-http-load-balancer-created.png)
+![HTTP Load Balancer](screenshots/09-http-load-balancer-created.png)
 
 ---
 
@@ -344,7 +344,7 @@ Implementing Health Checks ensures that users only communicate with healthy back
 
 ### Screenshot
 
-![Health Check](Screenshots/10-health-check-cretaed.png)
+![Health Check](screenshots/10-health-check-cretaed.png)
 
 ---
 
@@ -370,7 +370,7 @@ Creating a reusable image improves operational efficiency and supports disaster 
 
 ### Screenshot
 
-![Custom VM Image](Screenshots/11-custom-vm-image-creted.png)
+![Custom VM Image](screenshots/11-custom-vm-image-creted.png)
 
 ---
 
@@ -411,7 +411,7 @@ Although the application was not deployed, this step provided practical experien
 
 ### Screenshot
 
-![App Engine Region Error](Screenshots/12-app-engine-error.png)
+![App Engine Region Error](screenshots/12-app-engine-error.png)
 
 ---
 
@@ -447,7 +447,7 @@ This demonstrated how serverless applications can be deployed quickly without pr
 
 ### Screenshot
 
-![Cloud Function](Screenshots/13-cloud-function-deployed.png)
+![Cloud Function](screenshots/13-cloud-function-deployed.png)
 
 ---
 
@@ -473,7 +473,7 @@ Monitoring cloud resources is important because it enables administrators to det
 
 ### Screenshot
 
-![Cloud Monitoring](Screenshots/14-cloud-monitoring-dashboard.png)
+![Cloud Monitoring](screenshots/14-cloud-monitoring-dashboard.png)
 
 ---
 
