@@ -1,653 +1,590 @@
-  # 🚀 Scalable and Secure Compute Infrastructure in Google Cloud
+# Scalable and Secure Compute Infrastructure in Google Cloud
 
-> A comprehensive hands-on Google Cloud Platform (GCP) project demonstrating the deployment of scalable, secure, highly available, and cost-optimized compute infrastructure using Google Compute Engine, Managed Instance Groups, Load Balancing, Google App Engine, Cloud Functions, and Cloud Monitoring.
+## Project Overview
 
----
+This project demonstrates the deployment of a scalable, secure, and cost-efficient compute infrastructure using Google Cloud Platform (GCP). The implementation focused on Google Compute Engine (GCE), Managed Instance Groups, HTTP Load Balancing, Cloud Monitoring, App Engine, and Cloud Functions.
 
-## 📖 Table of Contents
+The primary objective was to understand how Google Cloud compute services work together to provide secure, reliable, and highly available infrastructure for modern cloud applications.
 
-- [Project Overview](#project-overview)
-- [Objectives](#objectives)
-- [Project Scope](#project-scope)
-- [Architecture Overview](#architecture-overview)
-- [Technologies Used](#technologies-used)
-- [Prerequisites](#prerequisites)
-- [Implementation](#implementation)
-- [Security Best Practices](#security-best-practices)
-- [Cost Optimization](#cost-optimization)
-- [Challenges Encountered](#challenges-encountered)
-- [Lessons Learned](#lessons-learned)
-- [Project Outcome](#project-outcome)
-- [Screenshots](#screenshots)
-- [Conclusion](#conclusion)
-- [References](#references)
+Throughout this project, I deployed virtual machines, configured secure remote access, installed and tested a web server, implemented autoscaling, configured load balancing, created reusable virtual machine images, explored serverless computing, and monitored cloud resources.
+
+During the implementation, I also encountered some practical cloud deployment challenges such as Compute Engine resource stock shortages and App Engine regional limitations. These issues were investigated, documented, and appropriate alternatives were considered during the deployment process.
 
 ---
 
-# 📌 Project Overview
+# Project Objectives
 
-Cloud computing enables organizations to deploy applications that are scalable, reliable, and resilient without investing in physical infrastructure. Google Cloud Platform (GCP) provides a wide range of managed services that simplify infrastructure deployment while improving security, availability, and operational efficiency.
+The objectives of this project were to:
 
-This project demonstrates the deployment and management of a scalable compute environment using *Google Compute Engine (GCE). The implementation begins with provisioning a virtual machine, configuring secure remote access, and deploying an Apache web server. The infrastructure is then enhanced with **Instance Templates, **Managed Instance Groups, **Autoscaling, **HTTP Load Balancing, **Health Checks, and **Custom VM Images* to improve scalability and fault tolerance.
-
-The project further explores Google's serverless offerings through *Google App Engine* and *Cloud Functions, and concludes by implementing **Google Cloud Monitoring* to observe system health, performance metrics, and operational status.
-
-By completing this project, practical experience was gained in designing cloud-native infrastructure that aligns with industry best practices for security, scalability, reliability, and cost optimization.
-
----
-
-# 🎯 Objectives
-
-The primary objectives of this project are to:
-
-- Deploy a Compute Engine Virtual Machine on Google Cloud Platform.
-- Configure secure SSH access for remote server administration.
-- Install and configure the Apache Web Server.
-- Verify web server accessibility through the VM's external IP address.
-- Create an Instance Template for standardized VM deployments.
-- Configure a Managed Instance Group for high availability.
-- Enable Autoscaling based on workload demand.
-- Implement an HTTP Load Balancer to distribute incoming traffic.
-- Configure Health Checks to monitor backend instance availability.
+- Deploy a secure Compute Engine Virtual Machine.
+- Configure secure SSH access to the server.
+- Install and verify an Apache web server.
+- Create an Instance Template for reusable VM deployments.
+- Configure a Managed Instance Group (MIG).
+- Deploy an HTTP Load Balancer.
+- Configure Health Checks.
 - Create a reusable Custom VM Image.
-- Explore Platform as a Service (PaaS) deployment using Google App Engine.
-- Deploy a Serverless Function using Google Cloud Functions.
-- Monitor compute resources using Google Cloud Monitoring.
-- Apply cloud security and cost optimization best practices throughout the deployment.
+- Explore Google App Engine deployment.
+- Deploy a Cloud Function.
+- Monitor compute resources using Cloud Monitoring.
+- Understand Google Cloud cost optimization techniques.
+- Apply cloud security best practices throughout the deployment.
 
 ---
 
-# 📂 Project Scope
+# Technologies and Services Used
 
-The project covers the following Google Cloud services:
+The following Google Cloud services were used during this project.
 
-- Google Compute Engine
-- Virtual Machine Administration
-- SSH Connectivity
-- Apache Web Server Deployment
-- Instance Templates
-- Managed Instance Groups
-- Autoscaling
-- HTTP Load Balancing
-- Health Checks
-- Custom VM Images
-- Google App Engine
-- Google Cloud Functions
-- Google Cloud Monitoring
-- Identity and Access Management (IAM)
-- Virtual Private Cloud (VPC) Firewall Rules
-
-The implementation reflects a simplified production-ready cloud infrastructure suitable for hosting scalable web applications.
+| Service | Purpose |
+|----------|---------|
+| Google Compute Engine | Virtual Machine deployment |
+| Virtual Private Cloud (VPC) | Networking |
+| Firewall Rules | Network security |
+| SSH | Secure remote administration |
+| Apache2 | Web Server |
+| Instance Templates | Standardized VM deployment |
+| Managed Instance Groups | Autoscaling |
+| HTTP Load Balancer | Traffic distribution |
+| Health Checks | Instance monitoring |
+| Custom VM Images | Reusable server images |
+| Cloud Functions | Serverless computing |
+| Cloud Monitoring | Performance monitoring |
+| Identity and Access Management (IAM) | Access control |
 
 ---
 
-# 🏗️ Architecture Overview
+# Project Architecture
 
-The project architecture is designed to provide scalability, reliability, security, and efficient resource utilization by combining multiple Google Cloud services.
+The infrastructure implemented during this project follows a simple scalable cloud architecture.
 
-```text
-                              Internet Users
-                                     │
-                                     ▼
-                     HTTP Load Balancer (Global)
-                                     │
-                    ┌────────────────┴────────────────┐
-                    │                                 │
-                    ▼                                 ▼
-           VM Instance 1                     VM Instance 2
-            (Apache Web Server)              (Apache Web Server)
-                    │                                 │
-                    └───────────────┬─────────────────┘
-                                    │
-                       Managed Instance Group
-                                    │
-                           Instance Template
-                                    │
-                        Google Compute Engine
-                                    │
-                     Debian GNU/Linux 13 Server
-                                    │
-                              Apache2 Web Server
-
-             Additional Google Cloud Services
-
-             • Google App Engine
-             • Google Cloud Functions
-             • Google Cloud Monitoring
-             • IAM
-             • VPC Firewall Rules
 ```
 
----
 
-# ⚙️ Technologies Used
 
-| Technology | Purpose |
-|------------|---------|
-| *Google Cloud Platform (GCP)* | Cloud infrastructure provider |
-| *Google Compute Engine (GCE)* | Virtual machine hosting |
-| *Debian GNU/Linux 13* | Operating system |
-| *Apache2* | Web server |
-| *SSH* | Secure remote administration |
-| *Managed Instance Groups (MIG)* | Automatic VM management |
-| *Instance Templates* | Standardized VM configuration |
-| *HTTP Load Balancer* | Traffic distribution |
-| *Health Checks* | Backend availability monitoring |
-| *Custom VM Images* | Rapid server deployment |
-| *Google App Engine* | Platform-as-a-Service (PaaS) |
-| *Google Cloud Functions* | Serverless computing |
-| *Google Cloud Monitoring* | Performance monitoring |
-| *IAM* | Identity and Access Management |
-| *VPC Firewall Rules* | Network security |
+                    Users
+                       │
+                       │
+              HTTP Load Balancer
+                       │
+        ┌──────────────┴──────────────┐
+        │                             │
+ Managed Instance Group        Managed Instance Group
+        │                             │
+   Compute Engine VM          Compute Engine VM
+        │
+   
+ Apache Web Server
+```
 
----
 
-# 📋 Prerequisites
+Additional cloud services integrated into the solution include:
 
-Before beginning this project, ensure the following requirements are available:
-
-- Active Google Cloud Platform account
-- Google Cloud project
-- Billing enabled (where required)
-- Compute Engine API enabled
-- App Engine API enabled
-- Cloud Functions API enabled
-- Internet connection
-- Modern web browser
-- Basic Linux command-line knowledge
+- Cloud Monitoring
+- Health Checks
+- Cloud Functions
+- Identity and Access Management (IAM)
+- Firewall Rules
 
 ---
 
-# 🔄 Project Workflow
+# Project Implementation
 
-The project follows a structured deployment process:
+## Step 1 — Opening Google Compute Engine
 
-1. Provision a Compute Engine virtual machine.
-2. Configure secure SSH remote access.
-3. Install and configure the Apache web server.
-4. Verify web server accessibility.
-5. Create an Instance Template.
-6. Deploy a Managed Instance Group.
-7. Enable Autoscaling.
-8. Configure an HTTP Load Balancer.
-9. Configure Health Checks.
-10. Create a reusable Custom VM Image.
-11. Explore Google App Engine deployment.
-12. Deploy a Serverless Cloud Function.
-13. Configure Cloud Monitoring.
-14. Review security configurations.
-15. Apply cloud cost optimization strategies.
+The first stage of the implementation was to deploy a virtual machine using Google Compute Engine.
 
----
+I logged into the Google Cloud Console and selected my project named *GCP-Networking-Project*.
 
-# 🎯 Expected Outcomes
+From the navigation menu, I opened *Compute Engine*, where all virtual machines within the project are managed.
 
-After completing this project, the following outcomes were achieved:
+Google Compute Engine is Google Cloud's Infrastructure as a Service (IaaS) offering. It allows users to deploy virtual machines on Google's global cloud infrastructure while giving full control over the operating system, storage, networking, and security configuration.
 
-- Successfully deployed a Compute Engine virtual machine.
-- Configured secure SSH access.
-- Installed and verified the Apache web server.
-- Created reusable infrastructure templates.
-- Implemented autoscaling capabilities.
-- Configured load balancing for high availability.
-- Monitored backend health using health checks.
-- Created reusable VM images.
-- Explored serverless and PaaS services.
-- Implemented monitoring for operational visibility.
-- Applied cloud security best practices.
-- Demonstrated cost-conscious cloud deployment techniques.
-
----
-
-# 🚀 Implementation
-
-This section outlines the practical steps followed to deploy a scalable and secure compute infrastructure on Google Cloud Platform.
-
----
-
-## Step 1: Deploy a Google Compute Engine Virtual Machine
-
-A Google Compute Engine (GCE) virtual machine was created to serve as the primary compute resource for hosting the web application.
-
-### Configuration
-
-| Parameter | Value |
-|-----------|-------|
-| VM Name | `web-server-1` |
-| Region | `us-central1` |
-| Zone | Same zone selected during deployment |
-| Machine Type | `e2-micro` |
-| Operating System | `Debian GNU/Linux 13` |
-| Boot Disk | Standard Persistent Disk |
-| Firewall | Allow HTTP and HTTPS Traffic |
-
-### Purpose
-
-This virtual machine provides the compute environment where the web server and application services are hosted.
+This service forms the foundation for hosting applications and services within Google Cloud.
 
 ### Screenshot
 
-![VM Configuration](screenshots/02-m-creation.png)
+![Compute Engine Dashboard](Screenshots/01-compute-engine-dashboard.png)
 
 ---
 
-## Step 2: Verify VM Deployment
+## Step 2 — Creating the Virtual Machine
 
-After deployment, the virtual machine was verified to ensure it was successfully provisioned and running.
+After opening Compute Engine, I selected *Create Instance* to provision a new virtual machine.
 
-The following information was confirmed:
+Initially, the project specification recommended using an *e2-medium* machine type. However, Google Cloud reported a stockout error for the selected availability zone.
 
-- VM Status
-- Internal IP Address
-- External IP Address
-- Machine Type
-- Zone
-- Boot Disk
+Instead of delaying the deployment, I selected an available *e2-micro* machine type to continue the implementation successfully.
+
+The virtual machine was configured with the following settings:
+
+- Name: *web-server-1*
+- Region: *us-central1*
+- Zone: *us-central1-f*
+- Machine Type: *e2-micro*
+- Operating System: *Debian GNU/Linux 13*
+- HTTP Traffic: Enabled
+- HTTPS Traffic: Enabled
+
+Choosing Debian provided a lightweight, stable, and secure Linux operating system suitable for hosting web applications.
+
+Enabling HTTP and HTTPS traffic automatically created the required firewall rules, allowing web traffic to reach the server.
+
+After reviewing the configuration, I clicked *Create* and successfully deployed the virtual machine.
 
 ### Screenshot
 
-![Running Virtual Machine](screenshots/03-vm-instance-running.png)
+![VM Creation](Screenshots/02-m-creation.png)
 
 ---
 
-## Step 3: Configure Secure SSH Access
+## Step 3 — Verifying the Virtual Machine
 
-Secure Shell (SSH) was used to establish a secure remote connection to the virtual machine for server administration.
+After deployment, I returned to the VM Instances dashboard to verify that the virtual machine had been successfully created.
 
-### Command
+The status indicator displayed *Running*, confirming that the instance had booted successfully and was ready for use.
+
+At this stage, Google Cloud also assigned an internal IP address and an external public IP address to the server, enabling both internal communication within the Virtual Private Cloud and external connectivity over the internet.
+
+Successful deployment at this stage confirmed that the compute infrastructure was operational.
+
+### Screenshot
+
+![VM Running](Screenshots/03-vm-instance-running.png)
+
+---
+
+## Step 4 — Configuring Secure SSH Access
+
+After confirming that the virtual machine was running successfully, I established a secure remote connection using Google Cloud's built-in SSH-in-Browser feature.
+
+Secure Shell (SSH) is a cryptographic network protocol that allows administrators to securely access and manage remote Linux servers through a command-line interface. Unlike unsecured remote access methods, SSH encrypts all communication between the client and the server, protecting sensitive information from unauthorized access.
+
+From the VM Instances page, I clicked the *SSH* button beside *web-server-1*. Google Cloud automatically opened a browser-based terminal and authenticated the connection without requiring additional software.
+
+After connecting successfully, I verified the operating system by executing:
 
 ```bash
 lsb_release -a
 ```
 
-This command confirms the Linux distribution installed on the server.
+The command confirmed that the virtual machine was running *Debian GNU/Linux 13 (Trixie)*.
+
+Successfully connecting through SSH confirmed that the virtual machine was properly configured and ready for software installation and server administration.
 
 ### Screenshot
 
-![SSH Connection](screenshots/04-ssh-access.png)
+![SSH Access](Screenshots/04-ssh-access.png)
 
 ---
 
-## Step 4: Install Apache Web Server
+## Step 5 — Installing and Verifying Apache Web Server
 
-The Apache web server was installed to host web content.
+The next task was to install Apache HTTP Server on the virtual machine.
 
-### Update Package Repository
+Apache is one of the world's most widely used web servers. It receives requests from web browsers and delivers web pages to users over the internet. Installing Apache transformed the virtual machine into a functional web server capable of hosting websites and web applications.
+
+Before installing the package, I updated the Debian package repository to ensure that the latest software versions would be installed.
+
+I executed the following commands:
 
 ```bash
 sudo apt update
-```
-
-### Install Apache
-
-```bash
 sudo apt install apache2 -y
 ```
 
-### Verify Apache Status
+The installation completed successfully without errors.
+
+After installation, I verified that the Apache service was active by running:
 
 ```bash
 sudo systemctl status apache2
 ```
 
-A successful installation displays:
+The output displayed:
 
-```text
+```
 Active: active (running)
 ```
 
-### Screenshot
-
-![Apache Installation](screenshots/05-apache-service-running.png)
-
----
-
-## Step 5: Verify Apache Deployment
-
-The Apache web server was verified by accessing the VM's external IP address in a web browser.
-
-Expected Result:
-
-The default Apache web page should be displayed.
-
-Example:
-
-```
-
-http://YOUR_EXTERNAL_IP
-```
+This confirmed that the Apache web server had started successfully and was running correctly on the virtual machine.
 
 ### Screenshot
 
-![Apache Default Page](screenshots/06-apache-default-page.png)
+![Apache Service Running](Screenshots/05-apache-service-running.png)
 
 ---
 
-## Step 6: Create an Instance Template
+## Step 6 — Testing the Apache Web Server
 
-An Instance Template was created to standardize the configuration of future virtual machine instances.
+After confirming that Apache was running, I tested whether the web server was accessible over the internet.
 
-### Configuration
+Google Cloud had automatically assigned an external public IP address to the virtual machine. I copied the external IP address from the Compute Engine dashboard and entered it into a web browser.
+
+The browser displayed the default Apache web page with the message:
+
+> "Apache2 Debian Default Page"
+
+This page confirmed that:
+
+- The virtual machine was reachable through the internet.
+- HTTP firewall rules were functioning correctly.
+- Apache had been installed successfully.
+- The server was capable of serving web content.
+
+This successful test verified that the compute instance was fully operational as a web server.
+
+### Screenshot
+
+![Apache Default Page](Screenshots/06-apache-default-page.png)
+
+---
+
+## Step 7 — Creating an Instance Template
+
+To support future scalability, I created an Instance Template.
+
+An Instance Template is a reusable configuration that stores the specifications required to launch identical virtual machines. Rather than configuring each server manually, Google Cloud uses the template to automatically create new virtual machines whenever additional capacity is required.
+
+The template included the following configuration:
 
 - Machine Type: e2-micro
-- Operating System: Debian GNU/Linux
-- HTTP Enabled
-- HTTPS Enabled
+- Operating System: Debian GNU/Linux 13
+- HTTP Traffic Enabled
+- HTTPS Traffic Enabled
+- Boot Disk Configuration
+- Default Network Settings
 
-### Purpose
+Creating the template ensures consistency across all future virtual machine deployments and simplifies infrastructure management.
 
-Instance Templates provide consistency and simplify infrastructure deployment by ensuring all future VM instances use identical configurations.
+The template will later be used by the Managed Instance Group to automatically provision identical virtual machines during autoscaling events.
 
 ### Screenshot
 
-![Instance Template](screenshots/07-instance-template-created.png)
+![Instance Template](Screenshots/07-instance-template-created.png)
 
 ---
 
-## Step 7: Create a Managed Instance Group
+## Step 8 — Creating a Managed Instance Group
 
-A Managed Instance Group (MIG) was created using the previously defined Instance Template.
+After creating the Instance Template, the next task was to deploy a Managed Instance Group (MIG).
 
-### Autoscaling Configuration
+A Managed Instance Group is a collection of identical virtual machine instances that are automatically managed by Google Cloud. Instead of manually creating additional virtual machines when application demand increases, the Managed Instance Group automatically provisions new instances using the previously created Instance Template.
 
-| Setting | Value |
-|----------|-------|
+During the configuration, I selected the Instance Template that I had created earlier and configured the group to support autoscaling.
+
+The following configuration was used:
+
+| Configuration | Value |
+|---------------|-------|
+| Instance Group Name | web-server-group |
+| Instance Template | web-server-template |
+| Autoscaling | Enabled |
 | Minimum Instances | 2 |
 | Maximum Instances | 5 |
-| Scaling Metric | CPU Utilization |
 
-### Benefits
+Configuring the Managed Instance Group ensures that the infrastructure can automatically respond to increased workload by creating additional virtual machine instances whenever required.
 
-- Automatic VM creation
-- Automatic VM replacement
+This approach improves application availability while reducing manual administration.
+
+### Screenshot
+
+![Managed Instance Group](Screenshots/08-managed-instance-group.png)
+
+---
+
+## Step 9 — Configuring the HTTP Load Balancer
+
+To distribute incoming client requests efficiently across multiple virtual machine instances, I configured an HTTP Load Balancer.
+
+A Load Balancer acts as the entry point for client requests. Instead of directing all traffic to a single virtual machine, it distributes requests across healthy backend instances within the Managed Instance Group.
+
+During configuration, I created:
+
+- Backend Service
+- Frontend Configuration
+- Backend Instance Group
+- URL Mapping
+- Routing Rules
+
+The backend service was linked directly to the Managed Instance Group created in the previous step.
+
+Using a Load Balancer improves:
+
 - High Availability
-- Automatic Scaling
+- Fault Tolerance
+- Performance
+- Scalability
+
+If one virtual machine becomes unavailable, the Load Balancer automatically redirects traffic to healthy instances without affecting end users.
 
 ### Screenshot
 
-![Managed Instance Group](screenshots/08-managed-instance-group.png)
+![HTTP Load Balancer](Screenshots/09-http-load-balancer-created.png)
 
 ---
 
-## Step 8: Configure an HTTP Load Balancer
+## Step 10 — Configuring Health Checks
 
-To ensure high availability and efficient traffic distribution, an HTTP Load Balancer was configured. The load balancer distributes incoming client requests across multiple virtual machine instances within the Managed Instance Group.
+After configuring the Load Balancer, I created an HTTP Health Check.
 
-### Configuration
+Health Checks continuously monitor backend virtual machines to determine whether they are functioning correctly.
 
-| Parameter | Value |
-|-----------|-------|
-| Load Balancer Name | `web-load-balancer` |
-| Backend Service | `web-backend-service` |
-| Frontend | `web-frontend` |
+The Health Check periodically sends HTTP requests to each backend instance. If a virtual machine fails to respond successfully, Google Cloud temporarily removes it from the Load Balancer until it becomes healthy again.
+
+The Health Check was configured using:
+
+| Configuration | Value |
+|---------------|-------|
+| Name | web-health-check |
 | Protocol | HTTP |
 | Port | 80 |
-| Backend | Managed Instance Group |
-| Health Check | `web-health-check` |
 
-### Purpose
-
-The HTTP Load Balancer improves application availability by distributing incoming traffic evenly across healthy backend instances. If one instance becomes unavailable, traffic is automatically redirected to healthy instances.
+Implementing Health Checks ensures that users only communicate with healthy backend servers, improving application reliability and reducing downtime.
 
 ### Screenshot
 
-![HTTP Load Balancer](screenshots/09-http-load-balancer-created.png)
+![Health Check](Screenshots/10-health-check-cretaed.png)
 
 ---
 
-## Step 9: Configure Health Checks
+## Step 11 — Creating a Custom Virtual Machine Image
 
-A Health Check was configured to continuously monitor the status of backend virtual machines.
+To improve deployment consistency and simplify future infrastructure provisioning, I created a Custom Virtual Machine Image from the configured Compute Engine instance.
 
-### Configuration
+A Custom Image captures the complete operating system, installed software, and server configuration.
 
-| Parameter | Value |
-|-----------|-------|
-| Health Check Name | `web-health-check` |
-| Protocol | HTTP |
-| Port | 80 |
-| Check Interval | Default |
-| Timeout | Default |
+Instead of repeating the installation and configuration process for every new virtual machine, the image can be reused to launch identical servers within minutes.
 
-### Purpose
+The image was created using the boot disk attached to the Compute Engine virtual machine.
 
-Health Checks allow Google Cloud Load Balancing to determine whether backend instances are healthy. Unhealthy instances are automatically removed from traffic distribution until they recover.
+Configuration included:
 
-### Screenshot
-
-![Health Check](screenshots/10-health-check-cretaed.png)
-
----
-
-## Step 10: Create a Custom VM Image
-
-A reusable Custom VM Image was created from the configured Compute Engine virtual machine.
-
-### Image Configuration
-
-| Parameter | Value |
-|-----------|-------|
-| Image Name | `web-server-image` |
-| Source | Existing VM Boot Disk |
+| Configuration | Value |
+|---------------|-------|
+| Image Name | web-server-image |
+| Source | Existing Boot Disk |
 | Storage Location | Multi-region |
 
-### Benefits
-
-- Rapid deployment of identical virtual machines
-- Standardized server configuration
-- Disaster recovery support
-- Improved deployment consistency
+Creating a reusable image improves operational efficiency and supports disaster recovery by providing a standardized deployment artifact.
 
 ### Screenshot
 
-![Custom VM Image](screenshots/11-custom-vm-image-creted.png)
+![Custom VM Image](Screenshots/11-custom-vm-image-creted.png)
 
 ---
 
-## Step 11: Google App Engine
+### Summary of Progress
 
-Google App Engine was explored as Google's fully managed Platform as a Service (PaaS) solution for deploying web applications.
+At this stage of the implementation, the following components had been successfully deployed:
 
-### Expected Configuration
+- Google Compute Engine Virtual Machine
+- Apache Web Server
+- Secure SSH Access
+- Instance Template
+- Managed Instance Group
+- HTTP Load Balancer
+- Health Check
+- Custom Virtual Machine Image
 
-| Parameter | Value |
-|-----------|-------|
-| Runtime | Python |
-| Region | `us-central1` |
+These components collectively provide a scalable and highly available compute infrastructure capable of supporting web-based applications.
 
-### Challenge Encountered
+## Step 12 — Exploring Google App Engine
 
-During deployment, the App Engine region selector displayed the message:
+The next objective was to deploy a Python application using Google App Engine.
+
+Google App Engine (GAE) is Google Cloud's Platform as a Service (PaaS) offering. Unlike Compute Engine, where users manage virtual machines, App Engine automatically provisions infrastructure, scales applications based on traffic, and handles server maintenance.
+
+I navigated to *Google App Engine* and attempted to create a new application.
+
+During the configuration process, I was required to select a deployment region before the application could be created.
+
+However, the region selection window displayed the message:
 
 > *"No items to display."*
 
-As a result, the application could not be created. This appears to be a Google Cloud Console or project limitation rather than a configuration error.
+I verified that the correct Google Cloud project was selected and refreshed the console several times. I also confirmed the project configuration before attempting the deployment again. Despite these checks, no deployment region was available.
+
+As a result, the App Engine deployment could not be completed within the project environment.
+
+Although the application was not deployed, this step provided practical experience with the App Engine deployment workflow and highlighted that cloud deployments can sometimes be affected by platform or project limitations.
 
 ### Screenshot
 
-![App Engine Region Limitation](screenshots/12-app-engine-error.png)
+![App Engine Region Error](Screenshots/12-app-engine-error.png)
 
 ---
 
-## Step 12: Deploy a Google Cloud Function
+## Step 13 — Deploying a Google Cloud Function
 
-A serverless HTTP-triggered Cloud Function was deployed using Python.
+The next task involved deploying a serverless application using Google Cloud Functions.
 
-### Function Code
+Cloud Functions is Google's serverless compute service that executes code in response to HTTP requests or cloud events without requiring developers to manage servers.
 
-```python
-def hello_world(request):
-    return "Hello, GCP Compute!", 200
-```
+I navigated to *Cloud Run → Functions* and created a new HTTP-triggered Cloud Function.
 
-### Function Configuration
+The function was configured using the following settings:
 
-| Parameter | Value |
-|-----------|-------|
-| Function Name | `hello-function` |
+| Configuration | Value |
+|---------------|-------|
+| Function Name | hello-function |
 | Runtime | Python |
 | Trigger | HTTP |
 | Authentication | Allow unauthenticated |
 
-### Purpose
+The following Python function was deployed:
 
-Cloud Functions enable developers to execute code without managing infrastructure. Google automatically provisions resources, scales the function based on demand, and handles server maintenance.
+```python
+def hello_world(request):
+    return "Hello, GCP Compute!", 200
+    
+    ```
+
+
+After deployment, Google Cloud generated an HTTP endpoint that can be used to invoke the function.
+
+This demonstrated how serverless applications can be deployed quickly without provisioning or maintaining virtual machines.
 
 ### Screenshot
 
-![Cloud Function](screenshots/13-cloud-function-deployed.png)
+![Cloud Function](Screenshots/13-cloud-function-deployed.png)
 
 ---
 
-## Step 13: Configure Cloud Monitoring
+## Step 14 — Monitoring Compute Resources
 
-Google Cloud Monitoring was used to observe the health, performance, and availability of deployed resources.
+The final implementation task was to review Google Cloud Monitoring.
 
-### Metrics Monitored
+Google Cloud Monitoring provides centralized monitoring for infrastructure, applications, and cloud services.
+
+I navigated to *Operations → Monitoring*, where I reviewed the monitoring dashboard.
+
+The dashboard provides visibility into:
 
 - CPU Utilization
-- Virtual Machine Health
+- Memory Usage
 - Network Traffic
-- Disk Utilization
+- Disk Activity
+- Virtual Machine Health
 - Logs
 - Performance Metrics
 
-### Purpose
-
-Cloud Monitoring provides real-time visibility into infrastructure performance, enabling administrators to identify issues early, configure alerts, and maintain service reliability.
+Monitoring cloud resources is important because it enables administrators to detect abnormal behaviour, troubleshoot performance issues, and maintain application availability.
 
 ### Screenshot
 
-![Cloud Monitoring](screenshots/14-cloud-monitoring-dashboard.png)
-
-
----
-
-# 🔒 Security Best Practices
-
-Security was considered throughout the deployment process to ensure that compute resources were protected and accessible only through approved methods.
-
-The following security measures were implemented:
-
-- Enabled secure SSH access for remote administration.
-- Configured VPC firewall rules to allow only required HTTP (Port 80) and HTTPS (Port 443) traffic.
-- Used Google Cloud Identity and Access Management (IAM) to control administrative permissions.
-- Configured HTTP Health Checks to ensure only healthy instances receive production traffic.
-- Leveraged Managed Instance Groups for automatic instance recovery.
-- Applied the Principle of Least Privilege (PoLP) by granting only the permissions required for each task.
-
-These practices improve infrastructure security while maintaining service availability.
+![Cloud Monitoring](Screenshots/14-cloud-monitoring-dashboard.png)
 
 ---
 
-# 💰 Cost Optimization
+# Security Best Practices Applied
 
-Cloud cost optimization is essential for building efficient and sustainable infrastructure. Several optimization techniques were incorporated into this project.
+During the implementation, several cloud security best practices were followed.
 
-## Implemented Strategies
+These include:
 
-- Selected the *e2-micro* machine type for cost-efficient compute resources.
-- Used *Managed Instance Groups* to automate resource management.
-- Enabled *Autoscaling* so additional instances are created only when demand increases.
-- Used *Cloud Monitoring* to observe resource utilization and identify underutilized resources.
+- Secure SSH access using Google Cloud authentication.
+- HTTP and HTTPS firewall rules configured only where required.
+- Identity and Access Management (IAM) used to control administrative access.
+- Health Checks configured to prevent traffic from reaching unhealthy virtual machines.
+- Managed Instance Groups configured to automatically replace unhealthy instances.
+- Principle of Least Privilege considered when granting permissions.
 
-## Recommended Production Optimizations
-
-For larger production environments, the following strategies are recommended:
-
-- Right-size virtual machines based on workload.
-- Use *Preemptible/Spot VMs* for fault-tolerant workloads.
-- Purchase *Committed Use Discounts (CUDs)* for predictable long-term workloads.
-- Regularly monitor usage with Cloud Monitoring and Billing Reports.
-
-These techniques help reduce operational costs while maintaining application performance.
+These practices improve the security and reliability of cloud infrastructure.
 
 ---
 
-# ⚠️ Challenges Encountered
+# Cost Optimization
 
-During implementation, several challenges were encountered and successfully resolved.
+Several cost optimization strategies were considered during this project.
 
-| Challenge | Resolution |
-|------------|------------|
-| Temporary Compute Engine stockout in selected zone | Switched to an available zone/region |
-| Apache web page initially inaccessible | Verified Apache installation and firewall configuration |
-| App Engine region selector displayed *"No items to display"* | Confirmed project configuration and documented the platform limitation |
-| Cloud service provisioning delays | Allowed additional time for Google Cloud services to initialize |
+These include:
 
-These experiences demonstrate the importance of troubleshooting and adapting to cloud platform constraints.
+- Selecting the *e2-micro* machine type to minimize infrastructure costs.
+- Using Managed Instance Groups with Autoscaling to provision resources only when needed.
+- Reviewing resource utilization through Cloud Monitoring.
+- Understanding the benefits of Preemptible VMs and Committed Use Discounts for production environments.
 
----
-
-# 📚 Lessons Learned
-
-This project provided valuable hands-on experience with Google Cloud Platform and reinforced several cloud engineering concepts.
-
-Key lessons include:
-
-- Provisioning and managing virtual machines using Google Compute Engine.
-- Configuring secure remote administration using SSH.
-- Deploying and validating a Linux-based Apache web server.
-- Building scalable infrastructure with Instance Templates and Managed Instance Groups.
-- Implementing HTTP Load Balancing and Health Checks for high availability.
-- Creating reusable Custom VM Images.
-- Understanding Platform as a Service (PaaS) using Google App Engine.
-- Deploying event-driven applications using Google Cloud Functions.
-- Monitoring cloud infrastructure using Google Cloud Monitoring.
-- Applying cloud security and cost optimization best practices.
+These techniques help reduce unnecessary cloud expenditure while maintaining system performance.
 
 ---
 
-# 🎯 Project Outcome
+# Challenges Encountered
 
-The project successfully demonstrated the deployment of a scalable, secure, and highly available compute infrastructure on Google Cloud Platform.
+During implementation, I encountered several practical cloud deployment challenges.
 
-Major achievements include:
+## Compute Engine Stockout
 
-- Successfully deployed a Compute Engine virtual machine.
-- Configured secure SSH access.
-- Installed and verified an Apache web server.
-- Implemented Instance Templates and Managed Instance Groups.
-- Configured HTTP Load Balancing and Health Checks.
-- Created a reusable Custom VM Image.
-- Explored App Engine deployment.
-- Deployed a serverless Cloud Function.
-- Implemented Cloud Monitoring for infrastructure visibility.
-- Applied security and cost optimization best practices.
+While creating the virtual machine, the recommended machine type was temporarily unavailable in the selected zone.
 
-This project reflects industry-standard cloud engineering practices used to build reliable and resilient cloud environments.
+To continue the project, I selected an available machine type that met the project requirements.
 
 ---
 
-# 📸 Screenshots
+## App Engine Region Limitation
 
-| Screenshot | Description |
-|------------|-------------|
-| 01 | Compute Engine VM Configuration |
-| 02 | Running Virtual Machine |
-| 03 | SSH Access and OS Verification |
-| 04 | Apache Installation |
-| 05 | Apache Default Web Page |
-| 06 | Instance Template |
-| 07 | Managed Instance Group |
-| 08 | HTTP Load Balancer |
-| 09 | Health Check |
-| 10 | Custom VM Image |
-| 11 | App Engine Region Limitation |
-| 12 | Cloud Function Deployment |
-| 13 | Cloud Monitoring Dashboard |
+During the App Engine deployment, no deployment region was available for selection.
+
+Although the deployment could not be completed, the issue was investigated and documented as part of the implementation process.
 
 ---
 
-# ✅ Conclusion
+## Load Balancer Configuration
 
-This project successfully demonstrated how Google Cloud Platform can be used to build secure, scalable, and resilient compute infrastructure. Beginning with a single Compute Engine virtual machine, the deployment evolved into a highly available architecture through the use of Instance Templates, Managed Instance Groups, HTTP Load Balancing, and Health Checks. Additional services such as Google Cloud Functions and Cloud Monitoring showcased Google's serverless and observability capabilities, while security and cost optimization practices ensured that the infrastructure aligned with modern cloud engineering standards.
+Configuring the HTTP Load Balancer required careful selection of backend services, frontend configuration, and health checks.
 
-Overall, this project strengthened practical skills in infrastructure deployment, Linux administration, networking, scalability, monitoring, and cloud security, providing a solid foundation for deploying production-ready workloads on Google Cloud Platform.
+Understanding how these components work together significantly improved my knowledge of Google Cloud networking.
 
 ---
 
-# 📖 References
+# Lessons Learned
+
+Completing this project provided valuable practical experience with Google Cloud Platform.
+
+Key learning outcomes include:
+
+- Deploying and managing Compute Engine virtual machines.
+- Secure Linux server administration using SSH.
+- Installing and configuring Apache Web Server.
+- Creating reusable Instance Templates.
+- Configuring Managed Instance Groups.
+- Implementing HTTP Load Balancing.
+- Monitoring infrastructure using Cloud Monitoring.
+- Understanding serverless computing with Cloud Functions.
+- Applying cloud security best practices.
+- Considering cost optimization strategies during cloud deployments.
+
+---
+
+# Project Outcome
+
+The project successfully demonstrated how multiple Google Cloud services work together to build scalable and reliable cloud infrastructure.
+
+The implementation provided practical experience with:
+
+- Infrastructure deployment.
+- Linux server administration.
+- High availability.
+- Autoscaling.
+- Load balancing.
+- Infrastructure monitoring.
+- Serverless computing.
+- Cloud security.
+- Cost optimization.
+
+Overall, this project strengthened my practical understanding of deploying, managing, securing, and monitoring compute infrastructure on Google Cloud Platform.
+
+---
+
+# Conclusion
+
+This project successfully demonstrated the deployment and management of scalable compute infrastructure using Google Cloud Platform. Beginning with the creation of a Compute Engine virtual machine, I configured secure SSH access, installed and verified an Apache web server, implemented Instance Templates, Managed Instance Groups, HTTP Load Balancing, Health Checks, and Custom VM Images. I also explored Google App Engine, deployed a serverless Cloud Function, and reviewed Cloud Monitoring for infrastructure observability.
+
+Although the App Engine deployment could not be completed because no deployment region was available, documenting and troubleshooting the issue reinforced the importance of adapting to real-world cloud platform limitations. Overall, the project improved my practical skills in cloud infrastructure deployment, Linux administration, networking, scalability, monitoring, and cloud security.
+
+---
+
+# References
 
 - [Google Cloud Documentation](https://cloud.google.com/docs)
 - [Google Compute Engine Documentation](https://cloud.google.com/compute/docs)
@@ -661,9 +598,9 @@ Overall, this project strengthened practical skills in infrastructure deployment
 
 ---
 
-# 👨‍💻 Author
+# Author
 
-## *Adepomola Ayomide*
+## Adepomola Ayomide
 
 *Cloud & DevOps Engineer*
 
@@ -671,15 +608,13 @@ Overall, this project strengthened practical skills in infrastructure deployment
 
 - Google Cloud Platform (GCP)
 - Google Compute Engine
-- Linux System Administration
+- Linux Administration
 - Cloud Networking
 - Load Balancing
 - Autoscaling
 - Serverless Computing
 - Cloud Monitoring
 - Infrastructure Security
-- Cost Optimization
 - Git & GitHub
 
-> "Building scalable, secure, and reliable cloud infrastructure through continuous learning and hands-on projects."
-
+"Building secure, scalable, and reliable cloud infrastructure through hands-on projects and continuous learning."
