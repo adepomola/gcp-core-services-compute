@@ -434,11 +434,12 @@ The function was configured using the following settings:
 
 The following Python function was deployed:
 
-```python
+python
 def hello_world(request):
     return "Hello, GCP Compute!", 200
     
-    ```
+    
+
 
 
 After deployment, Google Cloud generated an HTTP endpoint that can be used to invoke the function.
